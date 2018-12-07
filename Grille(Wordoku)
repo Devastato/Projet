@@ -1,0 +1,1060 @@
+//import java.awt.Button;
+//import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.HashSet;
+//import java.util.ArrayList;
+//import java.util.HashSet;
+import java.util.Random;
+import java.util.Scanner;
+//import java.util.Set;
+import java.util.Set;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+//import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
+
+public class Grille extends JFrame {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    public int nbPoints;
+    public int nbErreurs;
+    Random rand = new Random();
+    Scanner sc = new Scanner(System.in);
+    
+    private ArrayList<String> recupLettre(int ligne, int colonne,String[][] tab)
+    {
+    	ArrayList<String> listInt = new ArrayList<String>();
+    	for(int i = 0; i < 9; i++)
+    	{
+    		if(tab[i][colonne]!=null)
+    			listInt.add(tab[i][colonne]);
+    	}
+    	for(int j = 0; j < 9; j++)
+    	{
+    		if(tab[ligne][j]!=null)
+    			listInt.add(tab[ligne][j]);
+    	}
+    	int codeRegion=0;
+    	if(ligne >= 0 && ligne <= 2)
+    	{
+    		if(colonne >= 0 && colonne <= 2)
+    			codeRegion = 1;
+    		if(colonne >= 3 && colonne <= 5)
+    			codeRegion = 2;
+    		if(colonne >= 6 && colonne <= 8)
+    			codeRegion = 3;
+    	}
+    	if(ligne >= 3 && ligne <=5)
+    	{
+    		if(colonne >= 0 && colonne <= 2)
+    			codeRegion = 4;
+    		if(colonne >= 3 && colonne <= 5)
+    			codeRegion = 5;
+    		if(colonne >= 6 && colonne <= 8)
+    			codeRegion = 6;
+    	}
+    	if(ligne >= 6 && ligne <= 8)
+    	{
+    		if(colonne >= 0 && colonne <= 2)
+    			codeRegion = 7;
+    		if(colonne >= 3 && colonne <= 5)
+    			codeRegion = 8;
+    		if(colonne >= 6 && colonne <= 8)
+    			codeRegion = 9;
+    	}
+    	switch(codeRegion)
+    	{
+    	case 1:
+    		for(int i = 0; i <= 2; i++)
+    		{
+    			for(int j = 0; j <= 2; j++)
+    			{
+    				if(tab[i][j]!=null)
+    					listInt.add(tab[i][j]);
+    			}
+    		}
+    		break;
+    	case 2:
+    		for(int i = 0; i <= 2; i++)
+    		{
+    			for(int j = 3; j <= 5; j++)
+    			{
+    				if(tab[i][j]!=null)
+    					listInt.add(tab[i][j]);
+    			}
+    		}
+    		break;
+    	case 3:
+    		for(int i = 0; i <= 2; i++)
+    		{
+    			for(int j = 6; j <= 8; j++)
+    			{
+    				if(tab[i][j]!=null)
+    					listInt.add(tab[i][j]);
+    			}
+    		}
+    		break;
+    	case 4:
+    		for(int i = 3; i <= 5; i++)
+    		{
+    			for(int j = 0; j <= 2; j++)
+    			{
+    				if(tab[i][j]!=null)
+    					listInt.add(tab[i][j]);
+    			}
+    		}
+    		break;
+    	case 5:
+    		for(int i = 3; i <= 5; i++)
+    		{
+    			for(int j = 3; j <= 5; j++)
+    			{
+    				if(tab[i][j]!=null)
+    					listInt.add(tab[i][j]);
+    			}
+    		}
+    		break;
+    	case 6:
+    		for(int i = 3; i <= 5; i++)
+    		{
+    			for(int j = 6; j <= 8; j++)
+    			{
+    				if(tab[i][j]!=null)
+    					listInt.add(tab[i][j]);
+    			}
+    		}
+    		break;
+    	case 7:
+    		for(int i = 6; i <= 8; i++)
+    		{
+    			for(int j = 0; j <= 2; j++)
+    			{
+    				if(tab[i][j]!=null)
+    					listInt.add(tab[i][j]);
+    			}
+    		}
+    		break;
+    	case 8:
+    		for(int i = 6; i <= 8; i++)
+    		{
+    			for(int j = 3; j <= 5; j++)
+    			{
+    				if(tab[i][j]!=null)
+    					listInt.add(tab[i][j]);
+    			}
+    		}
+    		break;
+    	case 9:
+    		for(int i = 6; i <= 8; i++)
+    		{
+    			for(int j = 6; j <= 8; j++)
+    			{
+    				if(tab[i][j]!=null)
+    					listInt.add(tab[i][j]);
+    			}
+    		}
+    		break;
+    	}
+    	Set<String> set = new HashSet<String>();
+    	set.addAll(listInt);
+    	ArrayList<String> distinctList = new ArrayList<String>(set);
+    	return distinctList;
+    }
+    
+    private ArrayList<String> CharPossible(ArrayList<String> al, int choix)
+    {
+    	ArrayList<String> charac = new ArrayList<String>();
+    	ArrayList<String> res = new ArrayList<String>();    	
+    	for(int i = 0; i < 9; i++)
+    	{    		
+    		charac.add(new String(getLettrePossible(choix)[i]));
+    		System.out.println(charac.get(i));
+    	}   		
+    	for(int j = 0; j < 9; j++)
+    	{
+    		if(!al.contains(charac.get(j)))
+    			res.add(charac.get(j));
+    	}
+    	return res;
+    }
+    
+    private String[] getLettrePossible(int choix)
+{
+	String[] tab = new String [9];
+	switch(choix)
+	{
+	case 1 :   //ACEILMNOS
+		tab[0] = "A";
+		tab[1] = "C";
+		tab[2] = "E";
+		tab[3] = "I";
+		tab[4] = "L";
+		tab[5] = "M";
+		tab[6] = "N";
+		tab[7] = "O";
+		tab[8] = "S";
+		break;
+	case 2 :	//AEGILNRST
+		tab[0] = "A";
+		tab[1] = "E";
+		tab[2] = "G";
+		tab[3] = "I";
+		tab[4] = "L";
+		tab[5] = "N";
+		tab[6] = "R";
+		tab[7] = "S";
+		tab[8] = "T";
+		break;
+	case 3 :	//ABEIMNRST
+		tab[0] = "A";
+		tab[1] = "B";
+		tab[2] = "E";
+		tab[3] = "I";
+		tab[4] = "M";
+		tab[5] = "N";
+		tab[6] = "R";
+		tab[7] = "S";
+		tab[8] = "T";
+		break;
+	case 4 :	//ACEINOQSU
+		tab[0] = "A";
+		tab[1] = "C";
+		tab[2] = "E";
+		tab[3] = "I";
+		tab[4] = "N";
+		tab[5] = "O";
+		tab[6] = "Q";
+		tab[7] = "S";
+		tab[8] = "U";
+		break;
+	case 5 :	//ACDEINORS
+		tab[0] = "A";
+		tab[1] = "C";
+		tab[2] = "D";
+		tab[3] = "E";
+		tab[4] = "I";
+		tab[5] = "N";
+		tab[6] = "O";
+		tab[7] = "R";
+		tab[8] = "S";
+		break;
+	case 6 :	//AEINQSTUZ
+		tab[0] = "A";
+		tab[1] = "E";
+		tab[2] = "I";
+		tab[3] = "N";
+		tab[4] = "Q";
+		tab[5] = "S";
+		tab[6] = "T";
+		tab[7] = "U";
+		tab[8] = "Z";
+		break;
+	case 7 :	//AEHIMNSTU
+		tab[0] = "A";
+		tab[1] = "E";
+		tab[2] = "H";
+		tab[3] = "I";
+		tab[4] = "M";
+		tab[5] = "N";
+		tab[6] = "S";
+		tab[7] = "T";
+		tab[8] = "U";
+		break;
+	case 8 :	//AEILMNRST
+		tab[0] = "A";
+		tab[1] = "E";
+		tab[2] = "I";
+		tab[3] = "L";
+		tab[4] = "M";
+		tab[5] = "N";
+		tab[6] = "R";
+		tab[7] = "S";
+		tab[8] = "T";
+		break;
+	case 9 :	//AEHMNORST
+		tab[0] = "A";
+		tab[1] = "E";
+		tab[2] = "H";
+		tab[3] = "M";
+		tab[4] = "N";
+		tab[5] = "O";
+		tab[6] = "R";
+		tab[7] = "S";
+		tab[8] = "T";
+		break;
+	}
+	return tab;
+	
+}
+
+private boolean verifLettre(String[] tab, String c)
+{
+	boolean verifLettre = false;
+	//System.out.println(c);
+	for(int i =0; i<9;i++)
+	{
+		//System.out.println(tab[i]);
+		if(c.equals(tab[i]))
+			verifLettre = true;			
+	}	
+	return verifLettre;
+}
+
+private String[][] getGrille(int choix)
+{
+    String[][] tab = new String[9][9];
+    switch(choix) {
+    case 1:
+    	tab[0][3] = "N";
+        tab[0][4] = "I";
+        tab[0][8] = "O";
+        tab[1][0] = "A";
+        tab[1][5] = "E";
+        tab[1][7] = "M";
+        tab[2][0] = "I";
+        tab[2][1] = "S";
+        tab[2][3] = "A";
+        tab[2][5] = "C";
+        tab[3][1] = "O";
+        tab[3][3] = "S";
+        tab[4][0] = "S";
+        tab[4][1] = "M";
+        tab[4][7] = "L";
+        tab[4][8] = "N";
+        tab[5][1] = "W";
+        tab[5][6] = "E";
+        tab[5][2] = "A";
+        tab[6][3] = "L";
+        tab[6][5] = "O";
+        tab[6][7] = "C";
+        tab[6][8] = "S";
+        tab[7][1] = "I";
+        tab[7][3] = "E";
+        tab[7][8] = "A";
+        tab[8][0] = "M";
+        tab[8][4] = "A";
+        tab[8][5] = "N";
+        //ACEILMNOS
+        nbErreurs = 8;
+        break;
+    case 2:
+    	tab[0][1] = "I";
+        tab[0][2] = "T";
+        tab[0][7] = "A";
+        tab[1][0] = "N";
+        tab[1][6] = "A";
+        tab[1][7] = "S";
+        tab[2][0] = "S";
+        tab[2][3] = "E";
+        tab[2][5] = "R";
+        tab[2][6] = "I";
+        tab[3][1] = "L";
+        tab[3][4] = "E";
+        tab[3][6] = "G";
+        tab[3][8] = "S";
+        tab[5][0] = "E";
+        tab[5][2] = "A";
+        tab[5][4] = "N";
+        tab[5][7] = "L";
+        tab[6][2] = "L";
+        tab[6][3] = "T";
+        tab[6][5] = "E";
+        tab[6][8] = "A";
+        tab[7][1] = "G";
+        tab[7][3] = "S";
+        tab[7][8] = "I";
+        tab[8][1] = "R";
+        tab[8][6] = "N";
+        tab[8][7] = "G";
+        nbErreurs = 7;
+        //AEGILNRST
+    	break;
+    case 3:
+    	tab[0][1] = "M";
+        tab[0][5] = "I";
+        tab[0][6] = "E";
+        tab[1][0] = "E";
+        tab[1][3] = "A";
+        tab[1][4] = "R";
+        tab[1][5] = "N";
+        tab[1][8] = "T";
+        tab[2][4] = "B";
+        tab[3][0] = "A";
+        tab[3][2] = "M";
+        tab[3][7] = "S";
+        tab[4][1] = "S";
+        tab[4][2] = "R";
+        tab[4][6] = "I";
+        tab[4][7] = "B";
+        tab[5][1] = "E";
+        tab[5][6] = "N";
+        tab[5][8] = "A";
+        tab[6][4] = "T";
+        tab[7][0] = "M";
+        tab[7][3] = "R";
+        tab[7][4] = "A";
+        tab[7][5] = "S";
+        tab[7][8] = "I";
+        tab[8][2] = "T";
+        tab[8][3] = "M";
+        tab[8][7] = "R";
+        nbErreurs = 6;
+        //ABEIMNRST
+    	break;
+    case 4:
+    	tab[0][1] = "U";
+        tab[0][6] = "Q";
+        tab[0][7] = "C";
+        tab[1][2] = "E";
+        tab[1][3] = "S";
+        tab[1][5] = "U";
+        tab[2][0] = "O";
+        tab[2][1] = "A";
+        tab[2][5] = "E";
+        tab[2][6] = "N";
+        tab[3][4] = "A";
+        tab[4][1] = "S";
+        tab[4][5] = "C";
+        tab[4][6] = "I";
+        tab[4][8] = "0";
+        tab[5][0] = "A";
+        tab[5][2] = "I";
+        tab[5][3] = "E";
+        tab[5][7] = "U";
+        tab[6][2] = "O";
+        tab[6][3] = "A";
+        tab[6][7] = "Q";
+        tab[6][8] = "C";
+        tab[7][3] = "Q";
+        tab[7][5] = "S";
+        tab[7][6] = "O";
+        tab[8][1] = "Q";
+        tab[8][2] = "A";
+        tab[8][7] = "N";
+        nbErreurs = 5;
+        //ACEINOQSU
+    	break;
+    case 5:
+    	tab[0][1] = "N";
+        tab[0][3] = "C";
+        tab[0][5] = "S";
+        tab[0][7] = "E";
+        tab[1][0] = "I";
+        tab[1][4] = "D";
+        tab[1][8] = "C";
+        tab[2][0] = "S";
+        tab[2][4] = "E";
+        tab[2][8] = "I";
+        tab[3][2] = "S";
+        tab[3][5] = "D";
+        tab[3][6] = "E";
+        tab[4][0] = "0";
+        tab[4][1] = "I";
+        tab[4][7] = "C";
+        tab[4][8] = "D";
+        tab[5][2] = "E";
+        tab[5][3] = "A";
+        tab[5][6] = "R";
+        tab[6][0] = "C";
+        tab[6][4] = "A";
+        tab[6][8] = "N";
+        tab[7][0] = "E";
+        tab[7][4] = "N";
+        tab[7][8] = "A";
+        tab[8][1] = "A";
+        tab[8][3] = "S";
+        tab[8][5] = "I";
+        tab[8][7] = "D";
+        nbErreurs = 4;
+        //ACDEINORS
+    	break;
+    case 6:
+    	tab[0][3] = "A";
+        tab[0][4] = "Z";
+        tab[0][5] = "Q";
+        tab[1][2] = "I";
+        tab[1][6] = "Z";
+        tab[2][0] = "Z";
+        tab[2][3] = "T";
+        tab[2][5] = "S";
+        tab[2][8] = "Q";
+        tab[3][0] = "Q";
+        tab[3][2] = "Z";
+        tab[3][6] = "A";
+        tab[3][8] = "I";
+        tab[4][1] = "T";
+        tab[4][7] = "N";
+        tab[5][0] = "N";
+        tab[5][2] = "A";
+        tab[5][6] = "U";
+        tab[5][8] = "S";
+        tab[6][0] = "U";
+        tab[6][3] = "S";
+        tab[6][5] = "Z";
+        tab[6][8] = "N";
+        tab[7][2] = "Q";
+        tab[7][6] = "S";
+        tab[8][3] = "Q";
+        tab[8][4] = "A";
+        tab[8][5] = "E";
+        nbErreurs = 3;
+        //AEINQSTUZ
+    	break;
+    case 7:
+    	tab[0][1] = "N";
+        tab[0][2] = "U";
+        tab[0][7] = "H";
+        tab[1][0] = "T";
+        tab[1][5] = "U";
+        tab[1][7] = "A";
+        tab[2][0] = "I";
+        tab[2][3] = "E";
+        tab[2][5] = "M";
+        tab[2][6] = "S";
+        tab[3][1] = "U";
+        tab[3][4] = "I";
+        tab[3][6] = "M";
+        tab[3][8] = "A";
+        tab[5][0] = "N";
+        tab[5][2] = "T";
+        tab[5][4] = "M";
+        tab[5][7] = "I";
+        tab[6][2] = "N";
+        tab[6][3] = "I";
+        tab[6][5] = "S";
+        tab[6][8] = "H";
+        tab[7][1] = "E";
+        tab[7][3] = "A";
+        tab[7][8] = "N";
+        tab[8][1] = "I";
+        tab[8][6] = "A";
+        tab[8][7] = "T";
+        nbErreurs = 2;
+        //AEHIMNSTU
+    	break;
+    case 8:
+    	tab[0][1] = "E";
+        tab[0][4] = "L";
+        tab[1][0] = "S";
+        tab[1][7] = "M";
+        tab[2][5] = "I";
+        tab[3][6] = "L";
+        tab[3][8] = "T";
+        tab[4][0] = "R";
+        tab[4][2] = "M";
+        tab[4][3] = "S";
+        tab[5][0] = "N";
+        tab[6][3] = "N";
+        tab[6][7] = "R";
+        tab[7][1] = "T";
+        tab[7][2] = "L";
+        tab[7][6] = "I";
+        tab[8][3] = "M";
+        nbErreurs = 1;
+        //AEILMNRST
+    	break;
+    case 9:
+    	tab[0][1] = "N";
+        tab[0][3] = "T";
+        tab[0][8] = "O";
+        tab[1][0] = "S";
+        tab[1][2] = "A";
+        tab[1][4] = "H";
+        tab[1][5] = "M";
+        tab[1][8] = "R";
+        tab[2][1] = "H";
+        tab[2][3] = "N";
+        tab[2][7] = "A";
+        tab[3][0] = "N";
+        tab[3][7] = "H";
+        tab[4][2] = "E";
+        tab[4][3] = "A";
+        tab[4][5] = "N";
+        tab[4][6] = "M";
+        tab[5][2] = "A";
+        tab[5][8] = "N";
+        tab[6][1] = "M";
+        tab[6][5] = "E";
+        tab[6][7] = "N";
+        tab[7][0] = "O";
+        tab[7][3] = "R";
+        tab[7][4] = "A";
+        tab[7][6] = "T";
+        tab[8][0] = "A";
+        tab[8][5] = "0";
+        tab[8][7] = "S";
+        nbErreurs = 1;
+    	//AEHMNORST
+    	break;
+    }
+    return tab;
+}
+
+private boolean verifColonne(String choix, String[][] tab, int ligne, int colonne)
+{
+	boolean verifLigne = true;
+	for(int i=0; i<colonne; i++)
+	{
+		if(tab[i][colonne]==choix)
+			verifLigne = false;
+	}
+	for(int i=colonne+1; i<9; i++)
+	{
+		if(tab[i][colonne]==choix)
+			verifLigne = false;
+	}
+	return verifLigne;
+}
+
+private boolean verifLigne(String choix, String[][] tab, int ligne, int colonne)
+{
+	boolean verifColonne = true;
+	for(int j=0; j<ligne; j++)
+	{
+		if(tab[ligne][j]==choix)
+			verifColonne = false;
+	}
+	for(int j=ligne+1; j<9; j++)
+	{
+		if(tab[ligne][j]==choix)
+			verifColonne = false;
+	}
+	return verifColonne;
+}
+
+private boolean verifRegion(String choix, String[][] tab, int ligne, int colonne)
+{
+	boolean verifRegion = true;
+	int codeRegion=0;
+	if(ligne >= 0 && ligne <= 2)
+	{
+		if(colonne >= 0 && colonne <= 2)
+			codeRegion = 1;
+		if(colonne >= 3 && colonne <= 5)
+			codeRegion = 2;
+		if(colonne >= 6 && colonne <= 8)
+			codeRegion = 3;
+	}
+	if(ligne >= 3 && ligne <=5)
+	{
+		if(colonne >= 0 && colonne <= 2)
+			codeRegion = 4;
+		if(colonne >= 3 && colonne <= 5)
+			codeRegion = 5;
+		if(colonne >= 6 && colonne <= 8)
+			codeRegion = 6;
+	}
+	if(ligne >= 6 && ligne <= 8)
+	{
+		if(colonne >= 0 && colonne <= 2)
+			codeRegion = 7;
+		if(colonne >= 3 && colonne <= 5)
+			codeRegion = 8;
+		if(colonne >= 6 && colonne <= 8)
+			codeRegion = 9;
+	}
+	switch(codeRegion)
+	{
+	case 1:
+		for(int i = 0; i <= 2; i++)
+		{
+			for(int j = 0; j <= 2; j++)
+			{
+				if(tab[i][j]!=null)
+				{
+					String oui = new String(tab[i][j]);
+					oui = oui.intern();
+					String non = new String(choix);
+					non = non.intern();
+					if(oui==non)
+					{
+						verifRegion = false;
+					}
+				}
+			}
+		}
+		break;
+	case 2:
+		for(int i = 0; i <= 2; i++)
+		{
+			for(int j = 3; j <= 5; j++)
+			{
+				if(tab[i][j]!=null)
+				{
+					String oui = new String(tab[i][j]);
+					oui = oui.intern();
+					String non = new String(choix);
+					non = non.intern();
+					if(oui==non)
+					{
+						verifRegion = false;
+					}
+				}
+			}
+		}
+		break;
+	case 3:
+		for(int i = 0; i <= 2; i++)
+		{
+			for(int j = 6; j <= 8; j++)
+			{
+				if(tab[i][j]!=null)
+				{
+					String oui = new String(tab[i][j]);
+					oui = oui.intern();
+					String non = new String(choix);
+					non = non.intern();
+					if(oui==non)
+					{
+						verifRegion = false;
+					}
+				}
+			}
+		}
+		break;
+	case 4:
+		for(int i = 3; i <= 5; i++)
+		{
+			for(int j = 0; j <= 2; j++)
+			{
+				if(tab[i][j]!=null)
+				{
+					String oui = new String(tab[i][j]);
+					oui = oui.intern();
+					String non = new String(choix);
+					non = non.intern();
+					if(oui==non)
+					{
+						verifRegion = false;
+					}
+				}
+			}
+		}
+		break;
+	case 5:
+		for(int i = 3; i <= 5; i++)
+		{
+			for(int j = 3; j <= 5; j++)
+			{
+				if(tab[i][j]!=null)
+				{
+					String oui = new String(tab[i][j]);
+					oui = oui.intern();
+					String non = new String(choix);
+					non = non.intern();
+					if(oui==non)
+					{
+						verifRegion = false;
+					}
+				}
+			}
+		}
+		break;
+	case 6:
+		for(int i = 3; i <= 5; i++)
+		{
+			for(int j = 6; j <= 8; j++)
+			{
+				if(tab[i][j]!=null)
+				{
+					String oui = new String(tab[i][j]);
+					oui = oui.intern();
+					String non = new String(choix);
+					non = non.intern();
+					if(oui==non)
+					{
+						verifRegion = false;
+					}
+				}
+			}
+		}
+		break;
+	case 7:
+		for(int i = 6; i <= 8; i++)
+		{
+			for(int j = 0; j <= 2; j++)
+			{
+				if(tab[i][j]!=null)
+				{
+					String oui = new String(tab[i][j]);
+					oui = oui.intern();
+					String non = new String(choix);
+					non = non.intern();
+					if(oui==non)
+					{
+						verifRegion = false;
+					}
+				}
+			}
+		}
+		break;
+	case 8:
+		for(int i = 6; i <= 8; i++)
+		{
+			for(int j = 3; j <= 5; j++)
+			{
+				if(tab[i][j]!=null)
+				{
+					String oui = new String(tab[i][j]);
+					oui = oui.intern();
+					String non = new String(choix);
+					non = non.intern();
+					if(oui==non)
+					{
+						verifRegion = false;
+					}
+				}
+			}
+		}
+		break;
+	case 9:
+		for(int i = 6; i <= 8; i++)
+		{
+			for(int j = 6; j <= 8; j++)
+			{
+				if(tab[i][j]!=null)
+				{
+					String oui = new String(tab[i][j]);
+					oui = oui.intern();
+					String non = new String(choix);
+					non = non.intern();
+					if(oui==non)
+					{
+						verifRegion = false;
+					}
+				}
+			}
+		}
+		break;
+	}
+	return verifRegion;
+}
+
+private boolean coupPossible(String choix, String[][] tab, int ligne, int colonne)
+{
+	boolean verif = false;
+	if(verifLigne(choix, tab, ligne, colonne) == true && verifColonne(choix, tab, ligne, colonne) == true && verifRegion(choix, tab, ligne, colonne) == true)
+		verif = true;
+	//System.out.println(verif);
+	return verif;
+}
+
+public void partieGagnee(String[][] tab, JFrame grille)
+{
+	boolean rempli = true;
+	for(int i = 0; i<9; i++)
+	{
+		for(int j = 0; j<9; j++)
+		{
+			if(tab[i][j] == null)
+				rempli = false;
+		}
+	}
+	if(rempli == true)
+	{
+		this.nbPoints = this.nbPoints + 1;
+		JOptionPane.showMessageDialog(grille, "Victoire !\nVous avez remport� la partie !\n Vous avec actuellement " + nbPoints + "points.", "Victoire !", JOptionPane.INFORMATION_MESSAGE);
+		String[] renouveau = { "Oui ", " Non" };
+		int relance = JOptionPane.showOptionDialog(grille,
+				"Voulez-vous retenter votre chance ?",
+				"Relancer !",
+				JOptionPane.YES_NO_CANCEL_OPTION,
+	    		JOptionPane.QUESTION_MESSAGE,
+				null,
+				renouveau,
+				renouveau[1]);
+		if(relance == 0)
+		{
+			this.dispose();
+			new JeuWordoku(this.nbPoints);
+		}
+		else
+		{
+			this.dispose();
+			System.out.println(this.nbPoints);
+		}
+		
+	}
+}
+
+public void recommencerPartie()
+{
+	this.dispose();
+	new JeuWordoku(this.nbPoints);
+}
+
+public Grille(int nbPoints){
+    this.setTitle("Grille sudoku");
+    this.setSize(600,700);
+    this.setLocationRelativeTo(null);
+    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    this.setResizable(false);
+    this.setContentPane(new Graph());
+    JFrame test = this;
+    setLayout(new GridLayout(9,9));
+    GridLayout gl = new GridLayout(9,9);
+    gl.setHgap(1);
+    gl.setVgap(1);
+    setLayout(gl);
+    ImageIcon jpg = new ImageIcon("wordoku-game.jpg");
+    String[] choixGrille = {" Tr�s simple - 1", " Simple - 2 ", " Moyen - 3 ", " Difficile - 4 ", " Plus difficile - 5 ", " Tr�s difficile - 6 ", " Vraiment difficile - 7 ", " Le plus difficile - 8 ", " L�gendaire - 9 ", " Quitter - 0 "};
+    final int choix = JOptionPane.showOptionDialog(null,
+    		"Le jeu Wordoku est propos� avec 9 grilles.\nChoisissez la votre !",
+    		"Choix de grille",
+    		JOptionPane.YES_NO_CANCEL_OPTION,
+    		JOptionPane.QUESTION_MESSAGE,
+    		jpg,
+    		choixGrille,
+    		choixGrille[9]);
+    if(choix != 9)
+    {
+    	final String[][] tab = getGrille(choix+1);
+    	JOptionPane.showMessageDialog(null, "Vous aurez " + nbErreurs + " vie(s) pour cette partie !", "Vies", JOptionPane.INFORMATION_MESSAGE);
+        for(int i=0; i<9; i++)
+        {
+            final int ligne = i;
+        	for(int j=0; j<9; j++)
+            {
+            	final int colonne = j;
+        		String c= tab[i][j];
+                if(c==null)
+                {
+                    c ="";
+                    JToggleButton bouton = new JToggleButton(c);
+                    bouton.addItemListener(new ItemListener(){
+
+                        public void itemStateChanged(ItemEvent itemEvent){
+
+                          if(itemEvent.getStateChange() == ItemEvent.SELECTED){ 
+
+                              //Change le texte du bouton
+                              Thread t = new Thread(new Runnable(){
+                                public void run() {
+                                    Thread st = new Thread(new Runnable(){
+                                        public void run() {
+                                        	System.out.println(choix);
+                                        	if(CharPossible(recupLettre(ligne, colonne, tab),choix+1).isEmpty())
+                                        	{
+                                        		JOptionPane.showMessageDialog(test, "Erreur. Liste des coups vide !", "Erreur", JOptionPane.INFORMATION_MESSAGE);
+                                            	JOptionPane.showMessageDialog(test, "Vous devez v�rifier les autres valeurs du Sudoku afin de continuer.", "Erreur", JOptionPane.INFORMATION_MESSAGE);
+                                            	String[] relance = {" Oui ! "," Non ! "};
+                                            	int choixRelance = JOptionPane.showOptionDialog(test,
+                                                		"Voulez recommencer la partie ?\nAttention, cela annulera la partie en cours.",
+                                                		"Choix de relance",
+                                                		JOptionPane.YES_NO_CANCEL_OPTION,
+                                                		JOptionPane.QUESTION_MESSAGE,
+                                                		null,
+                                                		relance,
+                                                		relance[1]);
+                                            	if(choixRelance == 0)
+                                            	{
+                                            		recommencerPartie();
+                                            	}
+                                        	}
+                                        	else
+                                        	{
+                                        		String entier = JOptionPane.showInputDialog(test, "Jouez votre coup !", "Coup", JOptionPane.QUESTION_MESSAGE);                                   		
+                                            	String MajEntier = entier.toUpperCase();
+                                            	if(verifLettre(getLettrePossible(choix+1),MajEntier)==false)
+                                            		JOptionPane.showMessageDialog(test, "Erreur. Entrez une valeur correcte.", "Erreur", JOptionPane.INFORMATION_MESSAGE);
+                                            	else
+                                            	{
+                                            		boolean coup = coupPossible(MajEntier, tab, ligne, colonne);
+                                                	tab[ligne][colonne] = MajEntier;
+                                                	//System.out.println(coup);
+                                                	//System.out.println(lettrePossible);
+                                                	if(coup==true)
+                                                	{                                         
+                                                    	bouton.setText(MajEntier);
+                                                    	partieGagnee(tab, test);                                               
+                                                	}
+                                                	else
+                                                	{
+                                                		nbErreurs--;
+                                                		JOptionPane.showMessageDialog(test, "Erreur.Impossible de jouer le coup.","Erreur",JOptionPane.INFORMATION_MESSAGE);
+                                                		tab[ligne][colonne]=null;                                                		
+                                                		if(nbErreurs == 0)
+                                                		{
+                                                			JOptionPane.showMessageDialog(test, "Vous avez perdu !\nLa partie va recommencer.", "Perdu", JOptionPane.INFORMATION_MESSAGE);
+                                                			recommencerPartie();
+                                                		}
+                                                		else
+                                                		{
+                                                			if(nbErreurs == 1 && choix != 8)
+                                                			{
+                                                				String[] choixAide = {" Oui ", " Non "};
+                                                				int aide = JOptionPane.showOptionDialog(test,
+                                                						"Attention, il ne vous reste plus qu'une chance avant le game over.\n Voulez-vous de l'aide pour les solutions de cette case ?",
+                                                						"Aide",
+                                                						JOptionPane.YES_NO_CANCEL_OPTION,
+                                                						JOptionPane.QUESTION_MESSAGE,
+                                                						null,
+                                                						choixAide,
+                                                						choixAide[1]);
+                                                				if(aide == 0)
+                                                				{
+                                                					JOptionPane.showMessageDialog(test,  new String("Voici les lettres possibles pour cette case du sudoku : " + CharPossible(recupLettre(ligne, colonne, tab), choix+1)));
+                                                				}
+                                                			}
+                                                		}
+                                                	}
+                                            	}
+                                            	
+                                        	}                                    	
+                                        }
+                                    });
+
+                                    if(SwingUtilities.isEventDispatchThread()){
+                                        st.start();
+
+                                        //Attend que le texte soit chang�
+                                        while(st.isAlive());
+                                    }
+                                    else{
+                                      SwingUtilities.invokeLater(st);
+
+                                      //Attend que le texte soit chang�
+                                      while(!st.isAlive() && st.isAlive());
+                                    }
+                                }
+                              });
+                              t.start();
+
+                              //Attend le changement de texte du bouton
+                              while(t.isAlive());
+
+                              //Traitement
+                              //System.out.println("Avant traitement");
+                              try {
+                                Thread.sleep(1);
+                              }
+                              catch (InterruptedException ex) {}
+                              //System.out.println("Apr�s traitement");
+
+                              //Fin du traitement (jamais execut�)
+                              bouton.setSelected(false);
+                          }
+                        }
+                    });
+                    add(bouton);
+                }
+                else
+                {
+                    JToggleButton bouton = new JToggleButton(c);
+                    bouton.setEnabled(false);
+                    add(bouton);
+                }
+            }
+        }
+        this.setVisible(true);
+      }
+    }    
+}
