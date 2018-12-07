@@ -1,0 +1,11 @@
+public class Main {
+
+	public static void main(String[] args) throws InterruptedException {
+			JeuWordoku wordoku = new JeuWordoku(0);
+			do
+			{
+				Thread.sleep(10);
+			}while(wordoku.wordoku.isFocusable()==true);
+			System.out.println(wordoku.wordoku.nbPoints);
+}
+}
