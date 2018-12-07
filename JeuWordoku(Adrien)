@@ -1,0 +1,13 @@
+
+public class JeuWordoku {
+	public Grille wordoku;
+	public int nbPoints;
+	
+	public JeuWordoku(int nbPoints)
+	{
+		this.nbPoints = nbPoints;
+		this.wordoku = new Grille(nbPoints);
+		//System.out.println(sudoku.getNbPoints());
+	}
+
+}
